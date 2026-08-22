@@ -35,74 +35,57 @@
 // private implementation details that can be changed or removed.
 
 // "%code top" blocks.
-#line 156 "./calc2/grammar/calc2_parser.bison.y"
+#line 100 "./calc2/grammar/calc2_parser.minimal.bison.y"
 
 // % code top
 // appears as topmost code block in generated .cpp file just below gnu license
 // your license for .cpp file
 
-/*
-MIT License
 
-Copyright (c) 2024-2026 Zartaj Majeed
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
-
-
-#line 70 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
+#line 46 "./calc2/flexbison.gen/calc2_parser.minimal.bison.cpp"
 
 
 // First part of user prologue.
-#line 187 "./calc2/grammar/calc2_parser.bison.y"
+#line 107 "./calc2/grammar/calc2_parser.minimal.bison.y"
 
 // %{ unnamed codeblock
 // goes at top of .cpp file after %code top, before namespace and parser class
 
 
-#line 80 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
+#line 56 "./calc2/flexbison.gen/calc2_parser.minimal.bison.cpp"
 
 
-#include "calc2_parser.bison.h"
+#include "calc2_parser.minimal.bison.h"
 
 
 // Unqualified %code blocks.
-#line 193 "./calc2/grammar/calc2_parser.bison.y"
+#line 113 "./calc2/grammar/calc2_parser.minimal.bison.y"
 
 // %code
 // appears in generated .cpp file after #include of generated .h file and before parser namespace and class
 
 #include <string>
+#include <print>
+
+#ifdef _MSC_VER
+// begin disable vc++ warning C4065 in .cpp file, switch statement contains default but no other case labels when there are no semantic actions
+#pragma warning(push)
+#pragma warning(disable: 4065)
+#endif
 
 using namespace std;
 
 namespace {
-  const auto defaultInputName = "inputstream"s;
+  const auto defaultInputName = "input"s;
 }
 
-void calc2::Calc2Parser::error(const location& loc, const string& msg) {
+void calc2min::Calc2MinParser::error(const location& loc, const string& msg) {
   const auto [file, line, col] = loc.begin;
-  bisonParam.driver.error = { msg, (uint64_t)line, (uint64_t)col, *file };
+  println("error at {}:{}.{}: {}", *file, line, col, msg);
 }
 
 
-#line 106 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
+#line 89 "./calc2/flexbison.gen/calc2_parser.minimal.bison.cpp"
 
 
 #ifndef YY_
@@ -193,12 +176,12 @@ void calc2::Calc2Parser::error(const location& loc, const string& msg) {
 #define YYERROR         goto yyerrorlab
 #define YYRECOVERING()  (!!yyerrstatus_)
 
-#line 123 "./calc2/grammar/calc2_parser.bison.y"
-namespace calc2 {
-#line 199 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
+#line 69 "./calc2/grammar/calc2_parser.minimal.bison.y"
+namespace calc2min {
+#line 182 "./calc2/flexbison.gen/calc2_parser.minimal.bison.cpp"
 
   /// Build a parser object.
-  Calc2Parser::Calc2Parser (function<Calc2Parser::symbol_type(LexParam&)> yylex_yyarg, BisonParam& bisonParam_yyarg, LexParam& lexParam_yyarg)
+  Calc2MinParser::Calc2MinParser (function<Calc2MinParser::symbol_type(LexParam&)> yylex_yyarg, LexParam& lexParam_yyarg)
 #if YYDEBUG
     : yydebug_ (false),
       yycdebug_ (&std::cerr),
@@ -206,14 +189,13 @@ namespace calc2 {
     :
 #endif
       yylex (yylex_yyarg),
-      bisonParam (bisonParam_yyarg),
       lexParam (lexParam_yyarg)
   {}
 
-  Calc2Parser::~Calc2Parser ()
+  Calc2MinParser::~Calc2MinParser ()
   {}
 
-  Calc2Parser::syntax_error::~syntax_error () YY_NOEXCEPT YY_NOTHROW
+  Calc2MinParser::syntax_error::~syntax_error () YY_NOEXCEPT YY_NOTHROW
   {}
 
   /*---------.
@@ -223,33 +205,33 @@ namespace calc2 {
 
 
   // by_state.
-  Calc2Parser::by_state::by_state () YY_NOEXCEPT
+  Calc2MinParser::by_state::by_state () YY_NOEXCEPT
     : state (empty_state)
   {}
 
-  Calc2Parser::by_state::by_state (const by_state& that) YY_NOEXCEPT
+  Calc2MinParser::by_state::by_state (const by_state& that) YY_NOEXCEPT
     : state (that.state)
   {}
 
   void
-  Calc2Parser::by_state::clear () YY_NOEXCEPT
+  Calc2MinParser::by_state::clear () YY_NOEXCEPT
   {
     state = empty_state;
   }
 
   void
-  Calc2Parser::by_state::move (by_state& that)
+  Calc2MinParser::by_state::move (by_state& that)
   {
     state = that.state;
     that.clear ();
   }
 
-  Calc2Parser::by_state::by_state (state_type s) YY_NOEXCEPT
+  Calc2MinParser::by_state::by_state (state_type s) YY_NOEXCEPT
     : state (s)
   {}
 
-  Calc2Parser::symbol_kind_type
-  Calc2Parser::by_state::kind () const YY_NOEXCEPT
+  Calc2MinParser::symbol_kind_type
+  Calc2MinParser::by_state::kind () const YY_NOEXCEPT
   {
     if (state == empty_state)
       return symbol_kind::S_YYEMPTY;
@@ -257,22 +239,15 @@ namespace calc2 {
       return YY_CAST (symbol_kind_type, yystos_[+state]);
   }
 
-  Calc2Parser::stack_symbol_type::stack_symbol_type ()
+  Calc2MinParser::stack_symbol_type::stack_symbol_type ()
   {}
 
-  Calc2Parser::stack_symbol_type::stack_symbol_type (YY_RVREF (stack_symbol_type) that)
+  Calc2MinParser::stack_symbol_type::stack_symbol_type (YY_RVREF (stack_symbol_type) that)
     : super_type (YY_MOVE (that.state), YY_MOVE (that.location))
   {
     switch (that.kind ())
     {
       case symbol_kind::S_INT: // "int"
-      case symbol_kind::S_expr: // expr
-      case symbol_kind::S_assign_exprs: // assign_exprs
-      case symbol_kind::S_assign_expr: // assign_expr
-      case symbol_kind::S_add_expr: // add_expr
-      case symbol_kind::S_term: // term
-      case symbol_kind::S_unary: // unary
-      case symbol_kind::S_atom: // atom
         value.YY_MOVE_OR_COPY< int64_t > (YY_MOVE (that.value));
         break;
 
@@ -290,19 +265,12 @@ namespace calc2 {
 #endif
   }
 
-  Calc2Parser::stack_symbol_type::stack_symbol_type (state_type s, YY_MOVE_REF (symbol_type) that)
+  Calc2MinParser::stack_symbol_type::stack_symbol_type (state_type s, YY_MOVE_REF (symbol_type) that)
     : super_type (s, YY_MOVE (that.location))
   {
     switch (that.kind ())
     {
       case symbol_kind::S_INT: // "int"
-      case symbol_kind::S_expr: // expr
-      case symbol_kind::S_assign_exprs: // assign_exprs
-      case symbol_kind::S_assign_expr: // assign_expr
-      case symbol_kind::S_add_expr: // add_expr
-      case symbol_kind::S_term: // term
-      case symbol_kind::S_unary: // unary
-      case symbol_kind::S_atom: // atom
         value.move< int64_t > (YY_MOVE (that.value));
         break;
 
@@ -319,20 +287,13 @@ namespace calc2 {
   }
 
 #if YY_CPLUSPLUS < 201103L
-  Calc2Parser::stack_symbol_type&
-  Calc2Parser::stack_symbol_type::operator= (const stack_symbol_type& that)
+  Calc2MinParser::stack_symbol_type&
+  Calc2MinParser::stack_symbol_type::operator= (const stack_symbol_type& that)
   {
     state = that.state;
     switch (that.kind ())
     {
       case symbol_kind::S_INT: // "int"
-      case symbol_kind::S_expr: // expr
-      case symbol_kind::S_assign_exprs: // assign_exprs
-      case symbol_kind::S_assign_expr: // assign_expr
-      case symbol_kind::S_add_expr: // add_expr
-      case symbol_kind::S_term: // term
-      case symbol_kind::S_unary: // unary
-      case symbol_kind::S_atom: // atom
         value.copy< int64_t > (that.value);
         break;
 
@@ -348,20 +309,13 @@ namespace calc2 {
     return *this;
   }
 
-  Calc2Parser::stack_symbol_type&
-  Calc2Parser::stack_symbol_type::operator= (stack_symbol_type& that)
+  Calc2MinParser::stack_symbol_type&
+  Calc2MinParser::stack_symbol_type::operator= (stack_symbol_type& that)
   {
     state = that.state;
     switch (that.kind ())
     {
       case symbol_kind::S_INT: // "int"
-      case symbol_kind::S_expr: // expr
-      case symbol_kind::S_assign_exprs: // assign_exprs
-      case symbol_kind::S_assign_expr: // assign_expr
-      case symbol_kind::S_add_expr: // add_expr
-      case symbol_kind::S_term: // term
-      case symbol_kind::S_unary: // unary
-      case symbol_kind::S_atom: // atom
         value.move< int64_t > (that.value);
         break;
 
@@ -382,7 +336,7 @@ namespace calc2 {
 
   template <typename Base>
   void
-  Calc2Parser::yy_destroy_ (const char* yymsg, basic_symbol<Base>& yysym) const
+  Calc2MinParser::yy_destroy_ (const char* yymsg, basic_symbol<Base>& yysym) const
   {
     if (yymsg)
       YY_SYMBOL_PRINT (yymsg, yysym);
@@ -391,7 +345,7 @@ namespace calc2 {
 #if YYDEBUG
   template <typename Base>
   void
-  Calc2Parser::yy_print_ (std::ostream& yyo, const basic_symbol<Base>& yysym) const
+  Calc2MinParser::yy_print_ (std::ostream& yyo, const basic_symbol<Base>& yysym) const
   {
     std::ostream& yyoutput = yyo;
     YY_USE (yyoutput);
@@ -410,7 +364,7 @@ namespace calc2 {
 #endif
 
   void
-  Calc2Parser::yypush_ (const char* m, YY_MOVE_REF (stack_symbol_type) sym)
+  Calc2MinParser::yypush_ (const char* m, YY_MOVE_REF (stack_symbol_type) sym)
   {
     if (m)
       YY_SYMBOL_PRINT (m, sym);
@@ -418,7 +372,7 @@ namespace calc2 {
   }
 
   void
-  Calc2Parser::yypush_ (const char* m, state_type s, YY_MOVE_REF (symbol_type) sym)
+  Calc2MinParser::yypush_ (const char* m, state_type s, YY_MOVE_REF (symbol_type) sym)
   {
 #if 201103L <= YY_CPLUSPLUS
     yypush_ (m, stack_symbol_type (s, std::move (sym)));
@@ -429,40 +383,40 @@ namespace calc2 {
   }
 
   void
-  Calc2Parser::yypop_ (int n) YY_NOEXCEPT
+  Calc2MinParser::yypop_ (int n) YY_NOEXCEPT
   {
     yystack_.pop (n);
   }
 
 #if YYDEBUG
   std::ostream&
-  Calc2Parser::debug_stream () const
+  Calc2MinParser::debug_stream () const
   {
     return *yycdebug_;
   }
 
   void
-  Calc2Parser::set_debug_stream (std::ostream& o)
+  Calc2MinParser::set_debug_stream (std::ostream& o)
   {
     yycdebug_ = &o;
   }
 
 
-  Calc2Parser::debug_level_type
-  Calc2Parser::debug_level () const
+  Calc2MinParser::debug_level_type
+  Calc2MinParser::debug_level () const
   {
     return yydebug_;
   }
 
   void
-  Calc2Parser::set_debug_level (debug_level_type l)
+  Calc2MinParser::set_debug_level (debug_level_type l)
   {
     yydebug_ = l;
   }
 #endif // YYDEBUG
 
-  Calc2Parser::state_type
-  Calc2Parser::yy_lr_goto_state_ (state_type yystate, int yysym)
+  Calc2MinParser::state_type
+  Calc2MinParser::yy_lr_goto_state_ (state_type yystate, int yysym)
   {
     int yyr = yypgoto_[yysym - YYNTOKENS] + yystate;
     if (0 <= yyr && yyr <= yylast_ && yycheck_[yyr] == yystate)
@@ -472,25 +426,25 @@ namespace calc2 {
   }
 
   bool
-  Calc2Parser::yy_pact_value_is_default_ (int yyvalue) YY_NOEXCEPT
+  Calc2MinParser::yy_pact_value_is_default_ (int yyvalue) YY_NOEXCEPT
   {
     return yyvalue == yypact_ninf_;
   }
 
   bool
-  Calc2Parser::yy_table_value_is_error_ (int yyvalue) YY_NOEXCEPT
+  Calc2MinParser::yy_table_value_is_error_ (int yyvalue) YY_NOEXCEPT
   {
     return yyvalue == yytable_ninf_;
   }
 
   int
-  Calc2Parser::operator() ()
+  Calc2MinParser::operator() ()
   {
     return parse ();
   }
 
   int
-  Calc2Parser::parse ()
+  Calc2MinParser::parse ()
   {
     int yyn;
     /// Length of the RHS of the rule being reduced.
@@ -517,7 +471,7 @@ namespace calc2 {
 
 
     // User initialization code.
-#line 212 "./calc2/grammar/calc2_parser.bison.y"
+#line 139 "./calc2/grammar/calc2_parser.minimal.bison.y"
 {
 // %initial-action codeblock
 // goes inside parse() function in .cpp, it's a separate brace-scoped block, anything declared here is local to this block and cannot be used anywhere else in parse()
@@ -533,7 +487,7 @@ namespace calc2 {
   }
 }
 
-#line 537 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
+#line 491 "./calc2/flexbison.gen/calc2_parser.minimal.bison.cpp"
 
 
     /* Initialize the stack.  The initial state will be set in
@@ -649,13 +603,6 @@ namespace calc2 {
       switch (yyr1_[yyn])
     {
       case symbol_kind::S_INT: // "int"
-      case symbol_kind::S_expr: // expr
-      case symbol_kind::S_assign_exprs: // assign_exprs
-      case symbol_kind::S_assign_expr: // assign_expr
-      case symbol_kind::S_add_expr: // add_expr
-      case symbol_kind::S_term: // term
-      case symbol_kind::S_unary: // unary
-      case symbol_kind::S_atom: // atom
         yylhs.value.emplace< int64_t > ();
         break;
 
@@ -683,161 +630,8 @@ namespace calc2 {
         {
           switch (yyn)
             {
-  case 2: // expr: assign_exprs
-#line 254 "./calc2/grammar/calc2_parser.bison.y"
-               {
-  yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
-  bisonParam.driver.expr = yylhs.value.as < int64_t > ();
-}
-#line 693 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
 
-  case 3: // expr: assign_exprs ";"
-#line 258 "./calc2/grammar/calc2_parser.bison.y"
-                   {
-  yylhs.value.as < int64_t > () = yystack_[1].value.as < int64_t > ();
-  bisonParam.driver.expr = yylhs.value.as < int64_t > ();
-}
-#line 702 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-  case 4: // assign_exprs: assign_expr
-#line 265 "./calc2/grammar/calc2_parser.bison.y"
-              {
-  yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
-}
-#line 710 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-  case 5: // assign_exprs: assign_exprs ";" assign_expr
-#line 268 "./calc2/grammar/calc2_parser.bison.y"
-                               {
-  yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
-}
-#line 718 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-  case 6: // assign_expr: "ident" "=" assign_expr
-#line 273 "./calc2/grammar/calc2_parser.bison.y"
-                             {
-  if(!bisonParam.driver.symtab.contains(yystack_[2].value.as < string > ())) {
-    bisonParam.driver.symtab[yystack_[2].value.as < string > ()] = 0;
-  }
-  bisonParam.driver.symtab[yystack_[2].value.as < string > ()] = yystack_[0].value.as < int64_t > ();
-  yylhs.value.as < int64_t > () = bisonParam.driver.symtab[yystack_[2].value.as < string > ()];
-}
-#line 730 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-  case 7: // assign_expr: add_expr
-#line 280 "./calc2/grammar/calc2_parser.bison.y"
-           {
-  yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
-}
-#line 738 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-  case 8: // add_expr: term
-#line 285 "./calc2/grammar/calc2_parser.bison.y"
-       {
-  yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
-}
-#line 746 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-  case 9: // add_expr: add_expr "+" term
-#line 288 "./calc2/grammar/calc2_parser.bison.y"
-                    {
-  yylhs.value.as < int64_t > () = yystack_[2].value.as < int64_t > () + yystack_[0].value.as < int64_t > ();
-}
-#line 754 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-  case 10: // add_expr: add_expr "-" term
-#line 291 "./calc2/grammar/calc2_parser.bison.y"
-                    {
-  yylhs.value.as < int64_t > () = yystack_[2].value.as < int64_t > () - yystack_[0].value.as < int64_t > ();
-}
-#line 762 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-  case 11: // term: unary
-#line 296 "./calc2/grammar/calc2_parser.bison.y"
-        {
-  yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
-}
-#line 770 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-  case 12: // term: term "*" unary
-#line 299 "./calc2/grammar/calc2_parser.bison.y"
-                 {
-  yylhs.value.as < int64_t > () = yystack_[2].value.as < int64_t > () * yystack_[0].value.as < int64_t > ();
-}
-#line 778 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-  case 13: // term: term "/" unary
-#line 302 "./calc2/grammar/calc2_parser.bison.y"
-                 {
-  yylhs.value.as < int64_t > () = yystack_[2].value.as < int64_t > () / yystack_[0].value.as < int64_t > ();
-}
-#line 786 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-  case 14: // unary: atom
-#line 307 "./calc2/grammar/calc2_parser.bison.y"
-       {
-  yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
-}
-#line 794 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-  case 15: // unary: "+" unary
-#line 310 "./calc2/grammar/calc2_parser.bison.y"
-                 {
-  yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
-}
-#line 802 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-  case 16: // unary: "-" unary
-#line 313 "./calc2/grammar/calc2_parser.bison.y"
-                 {
-  yylhs.value.as < int64_t > () = -1 * yystack_[0].value.as < int64_t > ();
-}
-#line 810 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-  case 17: // atom: "int"
-#line 318 "./calc2/grammar/calc2_parser.bison.y"
-      {
-  yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
-}
-#line 818 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-  case 18: // atom: "ident"
-#line 321 "./calc2/grammar/calc2_parser.bison.y"
-        {
-  if(!bisonParam.driver.symtab.contains(yystack_[0].value.as < string > ())) {
-    bisonParam.driver.symtab[yystack_[0].value.as < string > ()] = 0;
-  }
-  yylhs.value.as < int64_t > () = bisonParam.driver.symtab[yystack_[0].value.as < string > ()];
-}
-#line 829 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-  case 19: // atom: "(" assign_expr ")"
-#line 327 "./calc2/grammar/calc2_parser.bison.y"
-                      {
-  yylhs.value.as < int64_t > () = yystack_[1].value.as < int64_t > ();
-}
-#line 837 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
-    break;
-
-
-#line 841 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
+#line 635 "./calc2/flexbison.gen/calc2_parser.minimal.bison.cpp"
 
             default:
               break;
@@ -1010,13 +804,13 @@ namespace calc2 {
   }
 
   void
-  Calc2Parser::error (const syntax_error& yyexc)
+  Calc2MinParser::error (const syntax_error& yyexc)
   {
     error (yyexc.location, yyexc.what ());
   }
 
   const char *
-  Calc2Parser::symbol_name (symbol_kind_type yysymbol)
+  Calc2MinParser::symbol_name (symbol_kind_type yysymbol)
   {
     static const char *const yy_sname[] =
     {
@@ -1029,14 +823,14 @@ namespace calc2 {
 
 
 
-  // Calc2Parser::context.
-  Calc2Parser::context::context (const Calc2Parser& yyparser, const symbol_type& yyla)
+  // Calc2MinParser::context.
+  Calc2MinParser::context::context (const Calc2MinParser& yyparser, const symbol_type& yyla)
     : yyparser_ (yyparser)
     , yyla_ (yyla)
   {}
 
   int
-  Calc2Parser::context::expected_tokens (symbol_kind_type yyarg[], int yyargn) const
+  Calc2MinParser::context::expected_tokens (symbol_kind_type yyarg[], int yyargn) const
   {
     // Actual number of expected tokens
     int yycount = 0;
@@ -1075,7 +869,7 @@ namespace calc2 {
 
 
   int
-  Calc2Parser::yy_syntax_error_arguments_ (const context& yyctx,
+  Calc2MinParser::yy_syntax_error_arguments_ (const context& yyctx,
                                                  symbol_kind_type yyarg[], int yyargn) const
   {
     /* There are many possibilities here to consider:
@@ -1115,7 +909,7 @@ namespace calc2 {
 
   // Generate an error message.
   std::string
-  Calc2Parser::yysyntax_error_ (const context& yyctx) const
+  Calc2MinParser::yysyntax_error_ (const context& yyctx) const
   {
     // Its maximum.
     enum { YYARGS_MAX = 5 };
@@ -1155,12 +949,12 @@ namespace calc2 {
   }
 
 
-  const signed char Calc2Parser::yypact_ninf_ = -4;
+  const signed char Calc2MinParser::yypact_ninf_ = -4;
 
-  const signed char Calc2Parser::yytable_ninf_ = -1;
+  const signed char Calc2MinParser::yytable_ninf_ = -1;
 
   const signed char
-  Calc2Parser::yypact_[] =
+  Calc2MinParser::yypact_[] =
   {
       -3,    -3,     6,     6,     1,    -4,    10,    14,    -4,     9,
        4,    -4,    -4,    11,    -4,    -4,    -4,    -3,    -4,    -3,
@@ -1169,7 +963,7 @@ namespace calc2 {
   };
 
   const signed char
-  Calc2Parser::yydefact_[] =
+  Calc2MinParser::yydefact_[] =
   {
        0,     0,     0,     0,    18,    17,     0,     2,     4,     7,
        8,    11,    14,     0,    18,    16,    15,     0,     1,     3,
@@ -1178,19 +972,19 @@ namespace calc2 {
   };
 
   const signed char
-  Calc2Parser::yypgoto_[] =
+  Calc2MinParser::yypgoto_[] =
   {
       -4,    -4,    -4,     5,    -4,     7,    -2,    -4
   };
 
   const signed char
-  Calc2Parser::yydefgoto_[] =
+  Calc2MinParser::yydefgoto_[] =
   {
        0,     6,     7,     8,     9,    10,    11,    12
   };
 
   const signed char
-  Calc2Parser::yytable_[] =
+  Calc2MinParser::yytable_[] =
   {
       15,    16,     1,     2,     3,    17,    13,    22,     4,     5,
       18,     1,     2,     3,    23,    20,    21,    14,     5,    24,
@@ -1198,7 +992,7 @@ namespace calc2 {
   };
 
   const signed char
-  Calc2Parser::yycheck_[] =
+  Calc2MinParser::yycheck_[] =
   {
        2,     3,     5,     6,     7,     4,     1,     3,    11,    12,
        0,     5,     6,     7,    10,     6,     7,    11,    12,     8,
@@ -1206,7 +1000,7 @@ namespace calc2 {
   };
 
   const signed char
-  Calc2Parser::yystos_[] =
+  Calc2MinParser::yystos_[] =
   {
        0,     5,     6,     7,    11,    12,    14,    15,    16,    17,
       18,    19,    20,    16,    11,    19,    19,     4,     0,     9,
@@ -1215,14 +1009,14 @@ namespace calc2 {
   };
 
   const signed char
-  Calc2Parser::yyr1_[] =
+  Calc2MinParser::yyr1_[] =
   {
        0,    13,    14,    14,    15,    15,    16,    16,    17,    17,
       17,    18,    18,    18,    19,    19,    19,    20,    20,    20
   };
 
   const signed char
-  Calc2Parser::yyr2_[] =
+  Calc2MinParser::yyr2_[] =
   {
        0,     2,     1,     2,     1,     3,     3,     1,     1,     3,
        3,     1,     3,     3,     1,     2,     2,     1,     1,     3
@@ -1232,15 +1026,15 @@ namespace calc2 {
 
 
 #if YYDEBUG
-  const short
-  Calc2Parser::yyrline_[] =
+  const unsigned char
+  Calc2MinParser::yyrline_[] =
   {
-       0,   254,   254,   258,   265,   268,   273,   280,   285,   288,
-     291,   296,   299,   302,   307,   310,   313,   318,   321,   327
+       0,   171,   171,   171,   173,   173,   175,   175,   177,   177,
+     177,   179,   179,   179,   181,   181,   181,   183,   183,   183
   };
 
   void
-  Calc2Parser::yy_stack_print_ () const
+  Calc2MinParser::yy_stack_print_ () const
   {
     *yycdebug_ << "Stack now";
     for (stack_type::const_iterator
@@ -1252,7 +1046,7 @@ namespace calc2 {
   }
 
   void
-  Calc2Parser::yy_reduce_print_ (int yyrule) const
+  Calc2MinParser::yy_reduce_print_ (int yyrule) const
   {
     int yylno = yyrline_[yyrule];
     int yynrhs = yyr2_[yyrule];
@@ -1267,12 +1061,17 @@ namespace calc2 {
 #endif // YYDEBUG
 
 
-#line 123 "./calc2/grammar/calc2_parser.bison.y"
-} // calc2
-#line 1273 "./calc2/flexbison.gen/calc2_parser.bison.cpp"
+#line 69 "./calc2/grammar/calc2_parser.minimal.bison.y"
+} // calc2min
+#line 1067 "./calc2/flexbison.gen/calc2_parser.minimal.bison.cpp"
 
-#line 331 "./calc2/grammar/calc2_parser.bison.y"
+#line 186 "./calc2/grammar/calc2_parser.minimal.bison.y"
 
 // %code epilog block
 // goes at bottom of generated .cpp file after namespace and parser implementation
+
+#ifdef _MSC_VER
+// end disable vc++ warning C4065 in .cpp file, switch statement contains default but no case labels in code generated for basic_symbol::clear()
+#pragma warning(pop)
+#endif
 

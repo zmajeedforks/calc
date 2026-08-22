@@ -35,7 +35,7 @@
 // private implementation details that can be changed or removed.
 
 // "%code top" blocks.
-#line 156 "./calc1/grammar/calc1_parser.bison.y"
+#line 157 "./calc1/grammar/calc1_parser.bison.y"
 
 // % code top
 // appears as topmost code block in generated .cpp file just below gnu license
@@ -70,7 +70,7 @@ SOFTWARE.
 
 
 // First part of user prologue.
-#line 187 "./calc1/grammar/calc1_parser.bison.y"
+#line 188 "./calc1/grammar/calc1_parser.bison.y"
 
 // %{ unnamed codeblock
 // goes at top of .cpp file after %code top, before namespace and parser class
@@ -83,13 +83,19 @@ SOFTWARE.
 
 
 // Unqualified %code blocks.
-#line 193 "./calc1/grammar/calc1_parser.bison.y"
+#line 194 "./calc1/grammar/calc1_parser.bison.y"
 
 // %code
 // appears in generated .cpp file after #include of generated .h file and before parser namespace and class
 
 #include <string>
 #include <print>
+
+#ifdef _MSC_VER
+// begin disable vc++ warning C4065 in .cpp file, switch statement contains default but no other case labels when there are no semantic actions
+#pragma warning(push)
+#pragma warning(disable: 4065)
+#endif
 
 using namespace std;
 
@@ -103,7 +109,7 @@ void calc1::Calc1Parser::error(const location& loc, const string& msg) {
 }
 
 
-#line 107 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 113 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
 
 
 #ifndef YY_
@@ -196,7 +202,7 @@ void calc1::Calc1Parser::error(const location& loc, const string& msg) {
 
 #line 123 "./calc1/grammar/calc1_parser.bison.y"
 namespace calc1 {
-#line 200 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 206 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
 
   /// Build a parser object.
   Calc1Parser::Calc1Parser (function<Calc1Parser::symbol_type(LexParam&)> yylex_yyarg, BisonParam& bisonParam_yyarg, LexParam& lexParam_yyarg)
@@ -272,7 +278,7 @@ namespace calc1 {
       case symbol_kind::S_assign_expr: // assign_expr
       case symbol_kind::S_add_expr: // add_expr
       case symbol_kind::S_term: // term
-      case symbol_kind::S_factor: // factor
+      case symbol_kind::S_unary: // unary
       case symbol_kind::S_atom: // atom
         value.YY_MOVE_OR_COPY< int64_t > (YY_MOVE (that.value));
         break;
@@ -302,7 +308,7 @@ namespace calc1 {
       case symbol_kind::S_assign_expr: // assign_expr
       case symbol_kind::S_add_expr: // add_expr
       case symbol_kind::S_term: // term
-      case symbol_kind::S_factor: // factor
+      case symbol_kind::S_unary: // unary
       case symbol_kind::S_atom: // atom
         value.move< int64_t > (YY_MOVE (that.value));
         break;
@@ -332,7 +338,7 @@ namespace calc1 {
       case symbol_kind::S_assign_expr: // assign_expr
       case symbol_kind::S_add_expr: // add_expr
       case symbol_kind::S_term: // term
-      case symbol_kind::S_factor: // factor
+      case symbol_kind::S_unary: // unary
       case symbol_kind::S_atom: // atom
         value.copy< int64_t > (that.value);
         break;
@@ -361,7 +367,7 @@ namespace calc1 {
       case symbol_kind::S_assign_expr: // assign_expr
       case symbol_kind::S_add_expr: // add_expr
       case symbol_kind::S_term: // term
-      case symbol_kind::S_factor: // factor
+      case symbol_kind::S_unary: // unary
       case symbol_kind::S_atom: // atom
         value.move< int64_t > (that.value);
         break;
@@ -518,7 +524,7 @@ namespace calc1 {
 
 
     // User initialization code.
-#line 213 "./calc1/grammar/calc1_parser.bison.y"
+#line 220 "./calc1/grammar/calc1_parser.bison.y"
 {
 // %initial-action codeblock
 // goes inside parse() function in .cpp, it's a separate brace-scoped block, anything declared here is local to this block and cannot be used anywhere else in parse()
@@ -534,7 +540,7 @@ namespace calc1 {
   }
 }
 
-#line 538 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 544 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
 
 
     /* Initialize the stack.  The initial state will be set in
@@ -655,7 +661,7 @@ namespace calc1 {
       case symbol_kind::S_assign_expr: // assign_expr
       case symbol_kind::S_add_expr: // add_expr
       case symbol_kind::S_term: // term
-      case symbol_kind::S_factor: // factor
+      case symbol_kind::S_unary: // unary
       case symbol_kind::S_atom: // atom
         yylhs.value.emplace< int64_t > ();
         break;
@@ -685,41 +691,41 @@ namespace calc1 {
           switch (yyn)
             {
   case 2: // expr: assign_exprs
-#line 255 "./calc1/grammar/calc1_parser.bison.y"
+#line 262 "./calc1/grammar/calc1_parser.bison.y"
                {
   yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
   bisonParam.expr = yylhs.value.as < int64_t > ();
 }
-#line 694 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 700 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
   case 3: // expr: assign_exprs ";"
-#line 259 "./calc1/grammar/calc1_parser.bison.y"
+#line 266 "./calc1/grammar/calc1_parser.bison.y"
                    {
   yylhs.value.as < int64_t > () = yystack_[1].value.as < int64_t > ();
   bisonParam.expr = yylhs.value.as < int64_t > ();
 }
-#line 703 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 709 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
   case 4: // assign_exprs: assign_expr
-#line 266 "./calc1/grammar/calc1_parser.bison.y"
+#line 273 "./calc1/grammar/calc1_parser.bison.y"
               {
   yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
 }
-#line 711 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 717 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
   case 5: // assign_exprs: assign_exprs ";" assign_expr
-#line 269 "./calc1/grammar/calc1_parser.bison.y"
+#line 276 "./calc1/grammar/calc1_parser.bison.y"
                                {
   yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
 }
-#line 719 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 725 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
   case 6: // assign_expr: "ident" "=" assign_expr
-#line 274 "./calc1/grammar/calc1_parser.bison.y"
+#line 281 "./calc1/grammar/calc1_parser.bison.y"
                              {
   if(!bisonParam.symtab.contains(yystack_[2].value.as < string > ())) {
     bisonParam.symtab[yystack_[2].value.as < string > ()] = 0;
@@ -727,118 +733,118 @@ namespace calc1 {
   bisonParam.symtab[yystack_[2].value.as < string > ()] = yystack_[0].value.as < int64_t > ();
   yylhs.value.as < int64_t > () = bisonParam.symtab[yystack_[2].value.as < string > ()];
 }
-#line 731 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 737 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
   case 7: // assign_expr: add_expr
-#line 281 "./calc1/grammar/calc1_parser.bison.y"
+#line 288 "./calc1/grammar/calc1_parser.bison.y"
            {
   yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
 }
-#line 739 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 745 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
   case 8: // add_expr: term
-#line 286 "./calc1/grammar/calc1_parser.bison.y"
+#line 293 "./calc1/grammar/calc1_parser.bison.y"
        {
   yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
 }
-#line 747 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 753 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
   case 9: // add_expr: add_expr "+" term
-#line 289 "./calc1/grammar/calc1_parser.bison.y"
+#line 296 "./calc1/grammar/calc1_parser.bison.y"
                     {
   yylhs.value.as < int64_t > () = yystack_[2].value.as < int64_t > () + yystack_[0].value.as < int64_t > ();
 }
-#line 755 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 761 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
   case 10: // add_expr: add_expr "-" term
-#line 292 "./calc1/grammar/calc1_parser.bison.y"
+#line 299 "./calc1/grammar/calc1_parser.bison.y"
                     {
   yylhs.value.as < int64_t > () = yystack_[2].value.as < int64_t > () - yystack_[0].value.as < int64_t > ();
 }
-#line 763 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 769 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
-  case 11: // term: factor
-#line 297 "./calc1/grammar/calc1_parser.bison.y"
-         {
+  case 11: // term: unary
+#line 304 "./calc1/grammar/calc1_parser.bison.y"
+        {
   yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
 }
-#line 771 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 777 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
-  case 12: // term: term "*" factor
-#line 300 "./calc1/grammar/calc1_parser.bison.y"
-                  {
+  case 12: // term: term "*" unary
+#line 307 "./calc1/grammar/calc1_parser.bison.y"
+                 {
   yylhs.value.as < int64_t > () = yystack_[2].value.as < int64_t > () * yystack_[0].value.as < int64_t > ();
 }
-#line 779 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 785 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
-  case 13: // term: term "/" factor
-#line 303 "./calc1/grammar/calc1_parser.bison.y"
-                  {
+  case 13: // term: term "/" unary
+#line 310 "./calc1/grammar/calc1_parser.bison.y"
+                 {
   yylhs.value.as < int64_t > () = yystack_[2].value.as < int64_t > () / yystack_[0].value.as < int64_t > ();
 }
-#line 787 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 793 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
-  case 14: // factor: atom
-#line 308 "./calc1/grammar/calc1_parser.bison.y"
+  case 14: // unary: atom
+#line 315 "./calc1/grammar/calc1_parser.bison.y"
        {
   yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
 }
-#line 795 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 801 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
-  case 15: // factor: "+" factor
-#line 311 "./calc1/grammar/calc1_parser.bison.y"
-                  {
+  case 15: // unary: "+" unary
+#line 318 "./calc1/grammar/calc1_parser.bison.y"
+                 {
   yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
 }
-#line 803 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 809 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
-  case 16: // factor: "-" factor
-#line 314 "./calc1/grammar/calc1_parser.bison.y"
-                  {
+  case 16: // unary: "-" unary
+#line 321 "./calc1/grammar/calc1_parser.bison.y"
+                 {
   yylhs.value.as < int64_t > () = -1 * yystack_[0].value.as < int64_t > ();
 }
-#line 811 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 817 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
   case 17: // atom: "int"
-#line 319 "./calc1/grammar/calc1_parser.bison.y"
+#line 326 "./calc1/grammar/calc1_parser.bison.y"
       {
   yylhs.value.as < int64_t > () = yystack_[0].value.as < int64_t > ();
 }
-#line 819 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 825 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
   case 18: // atom: "ident"
-#line 322 "./calc1/grammar/calc1_parser.bison.y"
+#line 329 "./calc1/grammar/calc1_parser.bison.y"
         {
   if(!bisonParam.symtab.contains(yystack_[0].value.as < string > ())) {
     bisonParam.symtab[yystack_[0].value.as < string > ()] = 0;
   }
   yylhs.value.as < int64_t > () = bisonParam.symtab[yystack_[0].value.as < string > ()];
 }
-#line 830 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 836 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
   case 19: // atom: "(" assign_expr ")"
-#line 328 "./calc1/grammar/calc1_parser.bison.y"
+#line 335 "./calc1/grammar/calc1_parser.bison.y"
                       {
   yylhs.value.as < int64_t > () = yystack_[1].value.as < int64_t > ();
 }
-#line 838 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 844 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
     break;
 
 
-#line 842 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 848 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
 
             default:
               break;
@@ -1023,7 +1029,7 @@ namespace calc1 {
     {
     "end of file", "error", "invalid token", "/", "=", "(", "-", "+", ")",
   ";", "*", "ident", "int", "$accept", "expr", "assign_exprs",
-  "assign_expr", "add_expr", "term", "factor", "atom", YY_NULLPTR
+  "assign_expr", "add_expr", "term", "unary", "atom", YY_NULLPTR
     };
     return yy_sname[yysymbol];
   }
@@ -1236,8 +1242,8 @@ namespace calc1 {
   const short
   Calc1Parser::yyrline_[] =
   {
-       0,   255,   255,   259,   266,   269,   274,   281,   286,   289,
-     292,   297,   300,   303,   308,   311,   314,   319,   322,   328
+       0,   262,   262,   266,   273,   276,   281,   288,   293,   296,
+     299,   304,   307,   310,   315,   318,   321,   326,   329,   335
   };
 
   void
@@ -1270,10 +1276,15 @@ namespace calc1 {
 
 #line 123 "./calc1/grammar/calc1_parser.bison.y"
 } // calc1
-#line 1274 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
+#line 1280 "./calc1/flexbison.gen/calc1_parser.bison.cpp"
 
-#line 332 "./calc1/grammar/calc1_parser.bison.y"
+#line 339 "./calc1/grammar/calc1_parser.bison.y"
 
 // %code epilog block
 // goes at bottom of generated .cpp file after namespace and parser implementation
+
+#ifdef _MSC_VER
+// end disable vc++ warning C4065 in .cpp file, switch statement contains default but no case labels in code generated for basic_symbol::clear()
+#pragma warning(pop)
+#endif
 

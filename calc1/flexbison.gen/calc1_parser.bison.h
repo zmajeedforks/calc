@@ -84,7 +84,7 @@ SOFTWARE.
 #include "calc1_locations.bison.h"
 
 #ifdef _MSC_VER
-// disable vc++ warning C4065, switch statement contains default but no case labels in code generated for basic_symbol::clear() in .h file
+// begin disable vc++ warning C4065 in .h file, switch statement contains default but no case labels in code generated for basic_symbol::clear()
 #pragma warning(push)
 #pragma warning(disable: 4065)
 #endif
@@ -472,7 +472,7 @@ namespace calc1 {
       // assign_expr
       // add_expr
       // term
-      // factor
+      // unary
       // atom
       char dummy1[sizeof (int64_t)];
 
@@ -577,7 +577,7 @@ namespace calc1 {
         S_assign_expr = 16,                      // assign_expr
         S_add_expr = 17,                         // add_expr
         S_term = 18,                             // term
-        S_factor = 19,                           // factor
+        S_unary = 19,                            // unary
         S_atom = 20                              // atom
       };
     };
@@ -621,7 +621,7 @@ namespace calc1 {
       case symbol_kind::S_assign_expr: // assign_expr
       case symbol_kind::S_add_expr: // add_expr
       case symbol_kind::S_term: // term
-      case symbol_kind::S_factor: // factor
+      case symbol_kind::S_unary: // unary
       case symbol_kind::S_atom: // atom
         value.move< int64_t > (std::move (that.value));
         break;
@@ -711,7 +711,7 @@ switch (yykind)
       case symbol_kind::S_assign_expr: // assign_expr
       case symbol_kind::S_add_expr: // add_expr
       case symbol_kind::S_term: // term
-      case symbol_kind::S_factor: // factor
+      case symbol_kind::S_unary: // unary
       case symbol_kind::S_atom: // atom
         value.template destroy< int64_t > ();
         break;
@@ -1448,7 +1448,7 @@ switch (yykind)
       case symbol_kind::S_assign_expr: // assign_expr
       case symbol_kind::S_add_expr: // add_expr
       case symbol_kind::S_term: // term
-      case symbol_kind::S_factor: // factor
+      case symbol_kind::S_unary: // unary
       case symbol_kind::S_atom: // atom
         value.copy< int64_t > (YY_MOVE (that.value));
         break;
@@ -1494,7 +1494,7 @@ switch (yykind)
       case symbol_kind::S_assign_expr: // assign_expr
       case symbol_kind::S_add_expr: // add_expr
       case symbol_kind::S_term: // term
-      case symbol_kind::S_factor: // factor
+      case symbol_kind::S_unary: // unary
       case symbol_kind::S_atom: // atom
         value.move< int64_t > (YY_MOVE (s.value));
         break;
@@ -1581,11 +1581,12 @@ switch (yykind)
 // everything here needs Calc1Parser defined earlier
 
 #ifdef _MSC_VER
+// end disable vc++ warning C4065 in .h file, switch statement contains default but no case labels in code generated for basic_symbol::clear()
 #pragma warning(pop)
 #endif
 
 
-#line 1589 "./calc1/flexbison.gen/calc1_parser.bison.h"
+#line 1590 "./calc1/flexbison.gen/calc1_parser.bison.h"
 
 
 #endif // !YY_YY_CALC1_PARSER_BISON_H_INCLUDED

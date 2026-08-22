@@ -1,7 +1,7 @@
 // calc1_parser.rules.bison.y
 
 // calc grammar without clutter of semantic actions
-// bison --color=always -Wall -Wdangling-alias -Werror -Wcounterexamples --report counterexamples,lookaheads --report-file bisonreport.txt calc1_parser.rules.bison.y
+// bison --color=always -Wall -Wdangling-alias -Werror -Wcounterexamples --report counterexamples,lookaheads --report-file calc1_grammar_report.rules.txt calc1_parser.rules.bison.y
 
 %{
 // %{ unnamed codeblock
@@ -33,9 +33,9 @@ assign_expr: IDENT "=" assign_expr | add_expr
 
 add_expr: term | add_expr "+" term | add_expr "-" term
 
-term: factor | term "*" factor | term "/" factor
+term: unary | term "*" unary | term "/" unary
 
-factor: atom | "+" factor | "-" factor
+unary: atom | "+" unary | "-" unary
 
 atom: INT | IDENT | "(" assign_expr ")"
 

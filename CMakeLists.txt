@@ -51,6 +51,7 @@ add_subdirectory(thirdparty)
 add_subdirectory(calc1)
 add_subdirectory(calc2)
 add_subdirectory(calc3)
+add_subdirectory(calc4)
 
 # external dependencies
 include(FetchContent)
@@ -72,7 +73,7 @@ execute_process(
 )
 message(STATUS "googletest source:\n${cmdout}")
 
-# reference implementation of c++26 indirect for vc++, clang
+# value_types, reference implementation of c++26 indirect for vc++, clang
 # library name is xyz_value_types
 # introduced in calc3
 if(WIN32 OR CMAKE_CXX_COMPILER_ID STREQUAL Clang)
@@ -93,12 +94,12 @@ if(WIN32 OR CMAKE_CXX_COMPILER_ID STREQUAL Clang)
   message(STATUS "C++ std indirect reference implementation source:\n${cmdout}")
 endif()
 
-# isocline library for repl
+# isocline, library for repl
 # introduced in calc3
 FetchContent_Declare(
   isocline
-  GIT_REPOSITORY https://github.com/daanx/isocline
-  GIT_TAG origin/main
+  GIT_REPOSITORY https://github.com/zmajeedforks/isocline
+  GIT_TAG origin/zmajeed_fixes
   GIT_SHALLOW TRUE
 )
 FetchContent_MakeAvailable(isocline)

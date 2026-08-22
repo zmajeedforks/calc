@@ -33,9 +33,9 @@ assign_expr: IDENT "=" assign_expr | add_expr
 
 add_expr: term | add_expr "+" term | add_expr "-" term
 
-term: factor | term "*" factor | term "/" factor
+term: unary | term "*" unary | term "/" unary
 
-factor: atom | "+" factor | "-" factor
+unary: atom | "+" unary | "-" unary
 
 atom: INT | IDENT | "(" assign_expr ")"
 

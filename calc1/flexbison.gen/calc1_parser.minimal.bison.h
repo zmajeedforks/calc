@@ -32,8 +32,8 @@
 
 
 /**
- ** \file ./calc2/flexbison.gen/calc2_parser.bison.h
- ** Define the calc2::parser class.
+ ** \file ./calc1/flexbison.gen/calc1_parser.minimal.bison.h
+ ** Define the calc1min::parser class.
  */
 
 // C++ LALR(1) parser skeleton written by Akim Demaille.
@@ -42,60 +42,29 @@
 // especially those whose name start with YY_ or yy_.  They are
 // private implementation details that can be changed or removed.
 
-#ifndef YY_YY_CALC2_PARSER_BISON_H_INCLUDED
-# define YY_YY_CALC2_PARSER_BISON_H_INCLUDED
+#ifndef YY_YY_CALC1_PARSER_MINIMAL_BISON_H_INCLUDED
+# define YY_YY_CALC1_PARSER_MINIMAL_BISON_H_INCLUDED
 // "%code requires" blocks.
-#line 61 "./calc2/grammar/calc2_parser.bison.y"
+#line 38 "./calc1/grammar/calc1_parser.minimal.bison.y"
 
 // %code requires codeblock goes at top of .h outside of namespace and parser class
 // standard c++ #includes and defines
-
-/*
-MIT License
-
-Copyright (c) 2024-2026 Zartaj Majeed
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
 
 #include <stdint.h>
 
 #include <string>
 #include <functional>
-#include <unordered_map>
 
-#include "calc2_locations.bison.h"
-
-#include "parser/calc2_bison_types.h"
+#include "calc1_locations.minimal.bison.h"
 
 #ifdef _MSC_VER
-// disable vc++ warning C4065, switch statement contains default but no case labels in code generated for basic_symbol::clear() in .h file
+// begin disable vc++ warning C4065 in .h file, switch statement contains default but no case labels in code generated for basic_symbol::clear()
 #pragma warning(push)
 #pragma warning(disable: 4065)
 #endif
 
-namespace calc2 {
+namespace calc1min {
 using namespace std;
-
-struct BisonParam {
-  BisonDriver& driver;
-};
 
 // info for lexer to use in yylex
 struct LexParam {
@@ -106,7 +75,7 @@ struct LexParam {
 }
 
 
-#line 110 "./calc2/flexbison.gen/calc2_parser.bison.h"
+#line 79 "./calc1/flexbison.gen/calc1_parser.minimal.bison.h"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -151,7 +120,7 @@ struct LexParam {
 #else
 # define YY_CONSTEXPR
 #endif
-# include "calc2_locations.bison.h"
+# include "calc1_locations.minimal.bison.h"
 #include <typeinfo>
 #ifndef YY_ASSERT
 # include <cassert>
@@ -245,15 +214,15 @@ struct LexParam {
 # define YYDEBUG 1
 #endif
 
-#line 123 "./calc2/grammar/calc2_parser.bison.y"
-namespace calc2 {
-#line 251 "./calc2/flexbison.gen/calc2_parser.bison.h"
+#line 69 "./calc1/grammar/calc1_parser.minimal.bison.y"
+namespace calc1min {
+#line 220 "./calc1/flexbison.gen/calc1_parser.minimal.bison.h"
 
 
 
 
   /// A Bison parser.
-  class Calc2Parser
+  class Calc1MinParser
   {
   public:
 #ifdef YYSTYPE
@@ -467,13 +436,6 @@ namespace calc2 {
     union union_type
     {
       // "int"
-      // expr
-      // assign_exprs
-      // assign_expr
-      // add_expr
-      // term
-      // unary
-      // atom
       char dummy1[sizeof (int64_t)];
 
       // "ident"
@@ -616,13 +578,6 @@ namespace calc2 {
         switch (this->kind ())
     {
       case symbol_kind::S_INT: // "int"
-      case symbol_kind::S_expr: // expr
-      case symbol_kind::S_assign_exprs: // assign_exprs
-      case symbol_kind::S_assign_expr: // assign_expr
-      case symbol_kind::S_add_expr: // add_expr
-      case symbol_kind::S_term: // term
-      case symbol_kind::S_unary: // unary
-      case symbol_kind::S_atom: // atom
         value.move< int64_t > (std::move (that.value));
         break;
 
@@ -706,13 +661,6 @@ namespace calc2 {
 switch (yykind)
     {
       case symbol_kind::S_INT: // "int"
-      case symbol_kind::S_expr: // expr
-      case symbol_kind::S_assign_exprs: // assign_exprs
-      case symbol_kind::S_assign_expr: // assign_expr
-      case symbol_kind::S_add_expr: // add_expr
-      case symbol_kind::S_term: // term
-      case symbol_kind::S_unary: // unary
-      case symbol_kind::S_atom: // atom
         value.template destroy< int64_t > ();
         break;
 
@@ -730,7 +678,7 @@ switch (yykind)
       /// The user-facing name of this symbol.
       const char *name () const YY_NOEXCEPT
       {
-        return Calc2Parser::symbol_name (this->kind ());
+        return Calc1MinParser::symbol_name (this->kind ());
       }
 
       /// Backward compatibility (Bison 3.6).
@@ -848,14 +796,14 @@ switch (yykind)
     };
 
     /// Build a parser object.
-    Calc2Parser (function<Calc2Parser::symbol_type(LexParam&)> yylex_yyarg, BisonParam& bisonParam_yyarg, LexParam& lexParam_yyarg);
-    virtual ~Calc2Parser ();
+    Calc1MinParser (function<Calc1MinParser::symbol_type(LexParam&)> yylex_yyarg, LexParam& lexParam_yyarg);
+    virtual ~Calc1MinParser ();
 
 #if 201103L <= YY_CPLUSPLUS
     /// Non copyable.
-    Calc2Parser (const Calc2Parser&) = delete;
+    Calc1MinParser (const Calc1MinParser&) = delete;
     /// Non copyable.
-    Calc2Parser& operator= (const Calc2Parser&) = delete;
+    Calc1MinParser& operator= (const Calc1MinParser&) = delete;
 #endif
 
     /// Parse.  An alias for parse ().
@@ -1093,7 +1041,7 @@ switch (yykind)
     class context
     {
     public:
-      context (const Calc2Parser& yyparser, const symbol_type& yyla);
+      context (const Calc1MinParser& yyparser, const symbol_type& yyla);
       const symbol_type& lookahead () const YY_NOEXCEPT { return yyla_; }
       symbol_kind_type token () const YY_NOEXCEPT { return yyla_.kind (); }
       const location_type& location () const YY_NOEXCEPT { return yyla_.location; }
@@ -1104,16 +1052,16 @@ switch (yykind)
       int expected_tokens (symbol_kind_type yyarg[], int yyargn) const;
 
     private:
-      const Calc2Parser& yyparser_;
+      const Calc1MinParser& yyparser_;
       const symbol_type& yyla_;
     };
 
   private:
 #if YY_CPLUSPLUS < 201103L
     /// Non copyable.
-    Calc2Parser (const Calc2Parser&);
+    Calc1MinParser (const Calc1MinParser&);
     /// Non copyable.
-    Calc2Parser& operator= (const Calc2Parser&);
+    Calc1MinParser& operator= (const Calc1MinParser&);
 #endif
 
 
@@ -1186,7 +1134,7 @@ switch (yykind)
 
 #if YYDEBUG
     // YYRLINE[YYN] -- Source line where rule number YYN was defined.
-    static const short yyrline_[];
+    static const unsigned char yyrline_[];
     /// Report on the debug stream that the rule \a r is going to be reduced.
     virtual void yy_reduce_print_ (int r) const;
     /// Print the state stack on the debug stream.
@@ -1420,22 +1368,21 @@ switch (yykind)
 
 
     // User arguments.
-    function<Calc2Parser::symbol_type(LexParam&)> yylex;
-    BisonParam& bisonParam;
+    function<Calc1MinParser::symbol_type(LexParam&)> yylex;
     LexParam& lexParam;
 
   };
 
   inline
-  Calc2Parser::symbol_kind_type
-  Calc2Parser::yytranslate_ (int t) YY_NOEXCEPT
+  Calc1MinParser::symbol_kind_type
+  Calc1MinParser::yytranslate_ (int t) YY_NOEXCEPT
   {
     return static_cast<symbol_kind_type> (t);
   }
 
   // basic_symbol.
   template <typename Base>
-  Calc2Parser::basic_symbol<Base>::basic_symbol (const basic_symbol& that)
+  Calc1MinParser::basic_symbol<Base>::basic_symbol (const basic_symbol& that)
     : Base (that)
     , value ()
     , location (that.location)
@@ -1443,13 +1390,6 @@ switch (yykind)
     switch (this->kind ())
     {
       case symbol_kind::S_INT: // "int"
-      case symbol_kind::S_expr: // expr
-      case symbol_kind::S_assign_exprs: // assign_exprs
-      case symbol_kind::S_assign_expr: // assign_expr
-      case symbol_kind::S_add_expr: // add_expr
-      case symbol_kind::S_term: // term
-      case symbol_kind::S_unary: // unary
-      case symbol_kind::S_atom: // atom
         value.copy< int64_t > (YY_MOVE (that.value));
         break;
 
@@ -1467,8 +1407,8 @@ switch (yykind)
 
 
   template <typename Base>
-  Calc2Parser::symbol_kind_type
-  Calc2Parser::basic_symbol<Base>::type_get () const YY_NOEXCEPT
+  Calc1MinParser::symbol_kind_type
+  Calc1MinParser::basic_symbol<Base>::type_get () const YY_NOEXCEPT
   {
     return this->kind ();
   }
@@ -1476,26 +1416,19 @@ switch (yykind)
 
   template <typename Base>
   bool
-  Calc2Parser::basic_symbol<Base>::empty () const YY_NOEXCEPT
+  Calc1MinParser::basic_symbol<Base>::empty () const YY_NOEXCEPT
   {
     return this->kind () == symbol_kind::S_YYEMPTY;
   }
 
   template <typename Base>
   void
-  Calc2Parser::basic_symbol<Base>::move (basic_symbol& s)
+  Calc1MinParser::basic_symbol<Base>::move (basic_symbol& s)
   {
     super_type::move (s);
     switch (this->kind ())
     {
       case symbol_kind::S_INT: // "int"
-      case symbol_kind::S_expr: // expr
-      case symbol_kind::S_assign_exprs: // assign_exprs
-      case symbol_kind::S_assign_expr: // assign_expr
-      case symbol_kind::S_add_expr: // add_expr
-      case symbol_kind::S_term: // term
-      case symbol_kind::S_unary: // unary
-      case symbol_kind::S_atom: // atom
         value.move< int64_t > (YY_MOVE (s.value));
         break;
 
@@ -1512,13 +1445,13 @@ switch (yykind)
 
   // by_kind.
   inline
-  Calc2Parser::by_kind::by_kind () YY_NOEXCEPT
+  Calc1MinParser::by_kind::by_kind () YY_NOEXCEPT
     : kind_ (symbol_kind::S_YYEMPTY)
   {}
 
 #if 201103L <= YY_CPLUSPLUS
   inline
-  Calc2Parser::by_kind::by_kind (by_kind&& that) YY_NOEXCEPT
+  Calc1MinParser::by_kind::by_kind (by_kind&& that) YY_NOEXCEPT
     : kind_ (that.kind_)
   {
     that.clear ();
@@ -1526,12 +1459,12 @@ switch (yykind)
 #endif
 
   inline
-  Calc2Parser::by_kind::by_kind (const by_kind& that) YY_NOEXCEPT
+  Calc1MinParser::by_kind::by_kind (const by_kind& that) YY_NOEXCEPT
     : kind_ (that.kind_)
   {}
 
   inline
-  Calc2Parser::by_kind::by_kind (token_kind_type t) YY_NOEXCEPT
+  Calc1MinParser::by_kind::by_kind (token_kind_type t) YY_NOEXCEPT
     : kind_ (yytranslate_ (t))
   {}
 
@@ -1539,53 +1472,54 @@ switch (yykind)
 
   inline
   void
-  Calc2Parser::by_kind::clear () YY_NOEXCEPT
+  Calc1MinParser::by_kind::clear () YY_NOEXCEPT
   {
     kind_ = symbol_kind::S_YYEMPTY;
   }
 
   inline
   void
-  Calc2Parser::by_kind::move (by_kind& that)
+  Calc1MinParser::by_kind::move (by_kind& that)
   {
     kind_ = that.kind_;
     that.clear ();
   }
 
   inline
-  Calc2Parser::symbol_kind_type
-  Calc2Parser::by_kind::kind () const YY_NOEXCEPT
+  Calc1MinParser::symbol_kind_type
+  Calc1MinParser::by_kind::kind () const YY_NOEXCEPT
   {
     return kind_;
   }
 
 
   inline
-  Calc2Parser::symbol_kind_type
-  Calc2Parser::by_kind::type_get () const YY_NOEXCEPT
+  Calc1MinParser::symbol_kind_type
+  Calc1MinParser::by_kind::type_get () const YY_NOEXCEPT
   {
     return this->kind ();
   }
 
 
-#line 123 "./calc2/grammar/calc2_parser.bison.y"
-} // calc2
-#line 1574 "./calc2/flexbison.gen/calc2_parser.bison.h"
+#line 69 "./calc1/grammar/calc1_parser.minimal.bison.y"
+} // calc1min
+#line 1507 "./calc1/flexbison.gen/calc1_parser.minimal.bison.h"
 
 
 // "%code provides" blocks.
-#line 145 "./calc2/grammar/calc2_parser.bison.y"
+#line 88 "./calc1/grammar/calc1_parser.minimal.bison.y"
 
 // %code provides codeblock
 // goes in .h after namespace and parser class
-// everything here needs Calc2Parser defined earlier
+// everything here needs Calc1Parser defined earlier
 
 #ifdef _MSC_VER
+// end disable vc++ warning C4065 in .h file, switch statement contains default but no case labels in code generated for basic_symbol::clear()
 #pragma warning(pop)
 #endif
 
 
-#line 1589 "./calc2/flexbison.gen/calc2_parser.bison.h"
+#line 1523 "./calc1/flexbison.gen/calc1_parser.minimal.bison.h"
 
 
-#endif // !YY_YY_CALC2_PARSER_BISON_H_INCLUDED
+#endif // !YY_YY_CALC1_PARSER_MINIMAL_BISON_H_INCLUDED

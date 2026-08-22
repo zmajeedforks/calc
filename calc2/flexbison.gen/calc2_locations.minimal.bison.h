@@ -31,12 +31,12 @@
 // version 2.2 of Bison.
 
 /**
- ** \file ./calc2/flexbison.gen/calc2_locations.bison.h
- ** Define the calc2::location class.
+ ** \file ./calc2/flexbison.gen/calc2_locations.minimal.bison.h
+ ** Define the calc2min::location class.
  */
 
-#ifndef YY_YY_LOCATIONS_BISON_H_INCLUDED
-# define YY_YY_LOCATIONS_BISON_H_INCLUDED
+#ifndef YY_YY_LOCATIONS_MINIMAL_BISON_H_INCLUDED
+# define YY_YY_LOCATIONS_MINIMAL_BISON_H_INCLUDED
 
 # include <iostream>
 # include <string>
@@ -53,9 +53,9 @@
 #  endif
 # endif
 
-#line 123 "./calc2/grammar/calc2_parser.bison.y"
-namespace calc2 {
-#line 59 "./calc2/flexbison.gen/calc2_locations.bison.h"
+#line 69 "./calc2/grammar/calc2_parser.minimal.bison.y"
+namespace calc2min {
+#line 59 "./calc2/flexbison.gen/calc2_locations.minimal.bison.h"
 
   /// A point in a source file.
   class position
@@ -299,8 +299,8 @@ namespace calc2 {
     return ostr;
   }
 
-#line 123 "./calc2/grammar/calc2_parser.bison.y"
-} // calc2
-#line 305 "./calc2/flexbison.gen/calc2_locations.bison.h"
+#line 69 "./calc2/grammar/calc2_parser.minimal.bison.y"
+} // calc2min
+#line 305 "./calc2/flexbison.gen/calc2_locations.minimal.bison.h"
 
-#endif // !YY_YY_LOCATIONS_BISON_H_INCLUDED
+#endif // !YY_YY_LOCATIONS_MINIMAL_BISON_H_INCLUDED
