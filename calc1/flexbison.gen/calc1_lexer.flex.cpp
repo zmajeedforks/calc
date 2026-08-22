@@ -1,4 +1,4 @@
-#line 2 "./calc1/flexbison.gen/calc1_lexer.flex.cpp"
+#line 1 "./calc1/flexbison.gen/calc1_lexer.flex.cpp"
 // top of generated .cpp file
 
 // fix flex bug vc++ warning C4005, INT8_MIN macro redefinition
@@ -16,7 +16,7 @@
 #pragma warning(disable: 4244)
 #endif
 
-#line 20 "./calc1/flexbison.gen/calc1_lexer.flex.cpp"
+#line 19 "./calc1/flexbison.gen/calc1_lexer.flex.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -1182,8 +1182,8 @@ using symbol_type = Calc1Parser::symbol_type;
 
 // flex start conditions appear as macros in .cpp file here
 
+#line 1185 "./calc1/flexbison.gen/calc1_lexer.flex.cpp"
 #line 1186 "./calc1/flexbison.gen/calc1_lexer.flex.cpp"
-#line 1187 "./calc1/flexbison.gen/calc1_lexer.flex.cpp"
 
 #define INITIAL 0
 
@@ -1378,7 +1378,7 @@ YY_DECL
  /* only c-style comments starting at second column allowed inside rules section */
  /* first flex rule starts at beginning of line */
 
-#line 1382 "./calc1/flexbison.gen/calc1_lexer.flex.cpp"
+#line 1381 "./calc1/flexbison.gen/calc1_lexer.flex.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1563,7 +1563,7 @@ YY_RULE_SETUP
 #line 200 "./calc1/grammar/calc1_lexer.flex.l"
 YY_FATAL_ERROR( "flex scanner jammed" );
 	YY_BREAK
-#line 1567 "./calc1/flexbison.gen/calc1_lexer.flex.cpp"
+#line 1566 "./calc1/flexbison.gen/calc1_lexer.flex.cpp"
 			case YY_STATE_EOF(INITIAL):
 				yyterminate();
 

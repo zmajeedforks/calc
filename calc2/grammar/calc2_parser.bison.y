@@ -94,6 +94,8 @@ SOFTWARE.
 
 #include "calc2_locations.bison.h"
 
+#include "parser/calc2_bison_types.h"
+
 #ifdef _MSC_VER
 // disable vc++ warning C4065, switch statement contains default but no case labels in code generated for basic_symbol::clear() in .h file
 #pragma warning(push)
@@ -103,17 +105,8 @@ SOFTWARE.
 namespace calc2 {
 using namespace std;
 
-struct Error {
-  string msg;
-  uint64_t line = 0;
-  uint64_t col = 0;
-  string file;
-};
-
 struct BisonParam {
-  int64_t expr = -1;
-  unordered_map<string, int64_t> symtab;
-  Error error;
+  BisonDriver& driver;
 };
 
 // info for lexer to use in yylex
@@ -211,7 +204,7 @@ namespace {
 
 void calc2::Calc2Parser::error(const location& loc, const string& msg) {
   const auto [file, line, col] = loc.begin;
-  bisonParam.error = { msg, (uint64_t)line, (uint64_t)col, *file };
+  bisonParam.driver.error = { msg, (uint64_t)line, (uint64_t)col, *file };
 }
 
 }
@@ -248,7 +241,7 @@ void calc2::Calc2Parser::error(const location& loc, const string& msg) {
 %nterm <int64_t>            assign_exprs
 %nterm <int64_t>            atom
 %nterm <int64_t>            expr
-%nterm <int64_t>            factor
+%nterm <int64_t>            unary
 %nterm <int64_t>            term
 
 %start expr
@@ -260,11 +253,11 @@ void calc2::Calc2Parser::error(const location& loc, const string& msg) {
 expr:
   assign_exprs {
   $$ = $assign_exprs;
-  bisonParam.expr = $$;
+  bisonParam.driver.expr = $$;
 }
 | assign_exprs ";" {
   $$ = $assign_exprs;
-  bisonParam.expr = $$;
+  bisonParam.driver.expr = $$;
 }
 
 // right-recursive for right associative assignment
@@ -278,11 +271,11 @@ assign_exprs:
 
 assign_expr:
   IDENT "=" assign_expr[rhs] {
-  if(!bisonParam.symtab.contains($IDENT)) {
-    bisonParam.symtab[$IDENT] = 0;
+  if(!bisonParam.driver.symtab.contains($IDENT)) {
+    bisonParam.driver.symtab[$IDENT] = 0;
   }
-  bisonParam.symtab[$IDENT] = $rhs;
-  $$ = bisonParam.symtab[$IDENT];
+  bisonParam.driver.symtab[$IDENT] = $rhs;
+  $$ = bisonParam.driver.symtab[$IDENT];
 }
 | add_expr {
   $$ = $add_expr;
@@ -300,24 +293,24 @@ add_expr:
 }
 
 term:
-  factor {
-  $$ = $factor;
+  unary {
+  $$ = $unary;
 }
-| term "*" factor {
-  $$ = $1 * $factor;
+| term "*" unary {
+  $$ = $1 * $unary;
 }
-| term "/" factor {
-  $$ = $1 / $factor;
+| term "/" unary {
+  $$ = $1 / $unary;
 }
 
-factor:
+unary:
   atom {
   $$ = $atom;
 }
-| "+" factor[rhs] {
+| "+" unary[rhs] {
   $$ = $rhs;
 }
-| "-" factor[rhs] {
+| "-" unary[rhs] {
   $$ = -1 * $rhs;
 }
 
@@ -326,10 +319,10 @@ atom:
   $$ = $INT;
 }
 | IDENT {
-  if(!bisonParam.symtab.contains($IDENT)) {
-    bisonParam.symtab[$IDENT] = 0;
+  if(!bisonParam.driver.symtab.contains($IDENT)) {
+    bisonParam.driver.symtab[$IDENT] = 0;
   }
-  $$ = bisonParam.symtab[$IDENT];
+  $$ = bisonParam.driver.symtab[$IDENT];
 }
 | "(" assign_expr ")" {
   $$ = $assign_expr;

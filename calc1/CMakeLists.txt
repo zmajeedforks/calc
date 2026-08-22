@@ -7,7 +7,7 @@ if(WIN32 OR EMSCRIPTEN)
   message("Use checked-in pre-generated calc1 bison, flex files from flexbison.gen directory")
   add_subdirectory(flexbison.gen)
 else()
-  message("Generate calc1 bison, flex files from grammar directory")
+  message("Run bison, flex to Generate calc1 parser from grammar directory")
   add_subdirectory(grammar)
 endif()
 

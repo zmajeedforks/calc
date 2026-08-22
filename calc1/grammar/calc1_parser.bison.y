@@ -96,7 +96,7 @@ SOFTWARE.
 #include "calc1_locations.bison.h"
 
 #ifdef _MSC_VER
-// disable vc++ warning C4065, switch statement contains default but no case labels in code generated for basic_symbol::clear() in .h file
+// begin disable vc++ warning C4065 in .h file, switch statement contains default but no case labels in code generated for basic_symbol::clear()
 #pragma warning(push)
 #pragma warning(disable: 4065)
 #endif
@@ -148,6 +148,7 @@ struct LexParam {
 // everything here needs Calc1Parser defined earlier
 
 #ifdef _MSC_VER
+// end disable vc++ warning C4065 in .h file, switch statement contains default but no case labels in code generated for basic_symbol::clear()
 #pragma warning(pop)
 #endif
 
@@ -197,6 +198,12 @@ SOFTWARE.
 #include <string>
 #include <print>
 
+#ifdef _MSC_VER
+// begin disable vc++ warning C4065 in .cpp file, switch statement contains default but no other case labels when there are no semantic actions
+#pragma warning(push)
+#pragma warning(disable: 4065)
+#endif
+
 using namespace std;
 
 namespace {
@@ -242,7 +249,7 @@ void calc1::Calc1Parser::error(const location& loc, const string& msg) {
 %nterm <int64_t>            assign_exprs
 %nterm <int64_t>            atom
 %nterm <int64_t>            expr
-%nterm <int64_t>            factor
+%nterm <int64_t>            unary
 %nterm <int64_t>            term
 
 %start expr
@@ -294,24 +301,24 @@ add_expr:
 }
 
 term:
-  factor {
-  $$ = $factor;
+  unary {
+  $$ = $unary;
 }
-| term "*" factor {
-  $$ = $1 * $factor;
+| term "*" unary {
+  $$ = $1 * $unary;
 }
-| term "/" factor {
-  $$ = $1 / $factor;
+| term "/" unary {
+  $$ = $1 / $unary;
 }
 
-factor:
+unary:
   atom {
   $$ = $atom;
 }
-| "+" factor[rhs] {
+| "+" unary[rhs] {
   $$ = $rhs;
 }
-| "-" factor [rhs]{
+| "-" unary [rhs]{
   $$ = -1 * $rhs;
 }
 
@@ -332,4 +339,9 @@ atom:
 %%
 // %code epilog block
 // goes at bottom of generated .cpp file after namespace and parser implementation
+
+#ifdef _MSC_VER
+// end disable vc++ warning C4065 in .cpp file, switch statement contains default but no case labels in code generated for basic_symbol::clear()
+#pragma warning(pop)
+#endif
 

@@ -15,13 +15,13 @@ Grammar
     8         | add_expr "+" term
     9         | add_expr "-" term
 
-   10 term: factor
-   11     | term "*" factor
-   12     | term "/" factor
+   10 term: unary
+   11     | term "*" unary
+   12     | term "/" unary
 
-   13 factor: atom
-   14       | "+" factor
-   15       | "-" factor
+   13 unary: atom
+   14      | "+" unary
+   15      | "-" unary
 
    16 atom: "int"
    17     | "ident"
@@ -63,7 +63,7 @@ Nonterminals, with rules where they appear
     term <int64_t> (18)
         on left: 10 11 12
         on right: 7 8 9 11 12
-    factor <int64_t> (19)
+    unary <int64_t> (19)
         on left: 13 14 15
         on right: 10 11 12 14 15
     atom <int64_t> (20)
@@ -86,7 +86,7 @@ State 0
     assign_expr   go to state 8
     add_expr      go to state 9
     term          go to state 10
-    factor        go to state 11
+    unary         go to state 11
     atom          go to state 12
 
 
@@ -103,13 +103,13 @@ State 1
     assign_expr  go to state 13
     add_expr     go to state 9
     term         go to state 10
-    factor       go to state 11
+    unary        go to state 11
     atom         go to state 12
 
 
 State 2
 
-   15 factor: "-" • factor
+   15 unary: "-" • unary
 
     "("      shift, and go to state 1
     "-"      shift, and go to state 2
@@ -117,13 +117,13 @@ State 2
     "ident"  shift, and go to state 14
     "int"    shift, and go to state 5
 
-    factor  go to state 15
-    atom    go to state 12
+    unary  go to state 15
+    atom   go to state 12
 
 
 State 3
 
-   14 factor: "+" • factor
+   14 unary: "+" • unary
 
     "("      shift, and go to state 1
     "-"      shift, and go to state 2
@@ -131,8 +131,8 @@ State 3
     "ident"  shift, and go to state 14
     "int"    shift, and go to state 5
 
-    factor  go to state 16
-    atom    go to state 12
+    unary  go to state 16
+    atom   go to state 12
 
 
 State 4
@@ -192,8 +192,8 @@ State 9
 State 10
 
     7 add_expr: term •  [$end, "-", "+", ")", ";"]
-   11 term: term • "*" factor
-   12     | term • "/" factor
+   11 term: term • "*" unary
+   12     | term • "/" unary
 
     "/"  shift, and go to state 22
     "*"  shift, and go to state 23
@@ -203,16 +203,16 @@ State 10
 
 State 11
 
-   10 term: factor •
+   10 term: unary •
 
     $default  reduce using rule 10 (term)
 
 
 State 12
 
-   13 factor: atom •
+   13 unary: atom •
 
-    $default  reduce using rule 13 (factor)
+    $default  reduce using rule 13 (unary)
 
 
 State 13
@@ -231,16 +231,16 @@ State 14
 
 State 15
 
-   15 factor: "-" factor •
+   15 unary: "-" unary •
 
-    $default  reduce using rule 15 (factor)
+    $default  reduce using rule 15 (unary)
 
 
 State 16
 
-   14 factor: "+" factor •
+   14 unary: "+" unary •
 
-    $default  reduce using rule 14 (factor)
+    $default  reduce using rule 14 (unary)
 
 
 State 17
@@ -256,7 +256,7 @@ State 17
     assign_expr  go to state 25
     add_expr     go to state 9
     term         go to state 10
-    factor       go to state 11
+    unary        go to state 11
     atom         go to state 12
 
 
@@ -283,7 +283,7 @@ State 19
     assign_expr  go to state 26
     add_expr     go to state 9
     term         go to state 10
-    factor       go to state 11
+    unary        go to state 11
     atom         go to state 12
 
 
@@ -297,9 +297,9 @@ State 20
     "ident"  shift, and go to state 14
     "int"    shift, and go to state 5
 
-    term    go to state 27
-    factor  go to state 11
-    atom    go to state 12
+    term   go to state 27
+    unary  go to state 11
+    atom   go to state 12
 
 
 State 21
@@ -312,14 +312,14 @@ State 21
     "ident"  shift, and go to state 14
     "int"    shift, and go to state 5
 
-    term    go to state 28
-    factor  go to state 11
-    atom    go to state 12
+    term   go to state 28
+    unary  go to state 11
+    atom   go to state 12
 
 
 State 22
 
-   12 term: term "/" • factor
+   12 term: term "/" • unary
 
     "("      shift, and go to state 1
     "-"      shift, and go to state 2
@@ -327,13 +327,13 @@ State 22
     "ident"  shift, and go to state 14
     "int"    shift, and go to state 5
 
-    factor  go to state 29
-    atom    go to state 12
+    unary  go to state 29
+    atom   go to state 12
 
 
 State 23
 
-   11 term: term "*" • factor
+   11 term: term "*" • unary
 
     "("      shift, and go to state 1
     "-"      shift, and go to state 2
@@ -341,8 +341,8 @@ State 23
     "ident"  shift, and go to state 14
     "int"    shift, and go to state 5
 
-    factor  go to state 30
-    atom    go to state 12
+    unary  go to state 30
+    atom   go to state 12
 
 
 State 24
@@ -369,8 +369,8 @@ State 26
 State 27
 
     9 add_expr: add_expr "-" term •  [$end, "-", "+", ")", ";"]
-   11 term: term • "*" factor
-   12     | term • "/" factor
+   11 term: term • "*" unary
+   12     | term • "/" unary
 
     "/"  shift, and go to state 22
     "*"  shift, and go to state 23
@@ -381,8 +381,8 @@ State 27
 State 28
 
     8 add_expr: add_expr "+" term •  [$end, "-", "+", ")", ";"]
-   11 term: term • "*" factor
-   12     | term • "/" factor
+   11 term: term • "*" unary
+   12     | term • "/" unary
 
     "/"  shift, and go to state 22
     "*"  shift, and go to state 23
@@ -392,13 +392,13 @@ State 28
 
 State 29
 
-   12 term: term "/" factor •
+   12 term: term "/" unary •
 
     $default  reduce using rule 12 (term)
 
 
 State 30
 
-   11 term: term "*" factor •
+   11 term: term "*" unary •
 
     $default  reduce using rule 11 (term)

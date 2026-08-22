@@ -34,699 +34,192 @@ SOFTWARE.
 #include <gtest/gtest.h>
 
 using namespace std;
-
 using namespace ::testing;
+
+namespace {
+using namespace calc2;
+
+struct Calc2_Bison: Test {
+
+  static int parse(const string& s, BisonDriver& driver) {
+
+    stringstream strm{s};
+    BisonParam bisonParam{driver};
+    Calc2Lexer lexer(strm);
+    LexParam lexParam;
+
+    Calc2Parser parser([&lexer](LexParam& param) -> Calc2Parser::symbol_type {
+      auto& loc = param.loc;
+      loc.step();
+      loc.columns();
+
+      return lexer.yylex(param);
+    },
+    bisonParam,
+    lexParam);
+
+    return parser();
+  }
+
+};
+
+}
 
 namespace calc2::testing {
 
-TEST(Calc2_BisonNoFlex, test_00) {
+TEST_F(Calc2_Bison, test_00) {
+  BisonDriver driver;
 
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-  queue<Calc2Parser::symbol_type> tokens{{
-    Calc2Parser::make_INT(3, location{}),
-  }};
-
-  Calc2Parser parser([&tokens](LexParam&) -> Calc2Parser::symbol_type {
-    if(tokens.empty()) {
-      return Calc2Parser::make_YYEOF(location{});
-    }
-    auto tok = tokens.front();
-    tokens.pop();
-    return tok;
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 3);
+  ASSERT_EQ(parse("2 + 3", driver), 0);
+  EXPECT_EQ(driver.expr, 5);
 }
 
-TEST(Calc2_BisonNoFlex, test_01) {
+TEST_F(Calc2_Bison, test_01) {
+  BisonDriver driver;
 
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-// 3 * 5
-  queue<Calc2Parser::symbol_type> tokens{{
-    Calc2Parser::make_INT(3, location{}),
-    Calc2Parser::make_TIMES(location{}),
-    Calc2Parser::make_INT(5, location{}),
-  }};
-
-  Calc2Parser parser([&tokens](LexParam&) -> Calc2Parser::symbol_type {
-    if(tokens.empty()) {
-      return Calc2Parser::make_YYEOF(location{});
-    }
-    auto tok = tokens.front();
-    tokens.pop();
-    return tok;
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 15);
+  ASSERT_EQ(parse("2 - 7", driver), 0);
+  EXPECT_EQ(driver.expr, -5);
 }
 
-TEST(Calc2_BisonNoFlex, test_02) {
+TEST_F(Calc2_Bison, test_02) {
+  BisonDriver driver;
 
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-// 3 + 5 * 7
-  queue<Calc2Parser::symbol_type> tokens{{
-    Calc2Parser::make_INT(3, location{}),
-    Calc2Parser::make_PLUS(location{}),
-    Calc2Parser::make_INT(5, location{}),
-    Calc2Parser::make_TIMES(location{}),
-    Calc2Parser::make_INT(7, location{}),
-  }};
-
-  Calc2Parser parser([&tokens](LexParam&) -> Calc2Parser::symbol_type {
-    if(tokens.empty()) {
-      return Calc2Parser::make_YYEOF(location{});
-    }
-    auto tok = tokens.front();
-    tokens.pop();
-    return tok;
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 38);
+  ASSERT_EQ(parse("2 + - 7", driver), 0);
+  EXPECT_EQ(driver.expr, -5);
 }
 
-TEST(Calc2_BisonNoFlex, test_03) {
+TEST_F(Calc2_Bison, test_03) {
+  BisonDriver driver;
 
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-// 3-5
-  queue<Calc2Parser::symbol_type> tokens{{
-    Calc2Parser::make_INT(3, location{}),
-    Calc2Parser::make_MINUS(location{}),
-    Calc2Parser::make_INT(5, location{}),
-  }};
-
-  Calc2Parser parser([&tokens](LexParam&) -> Calc2Parser::symbol_type {
-    if(tokens.empty()) {
-      return Calc2Parser::make_YYEOF(location{});
-    }
-    auto tok = tokens.front();
-    tokens.pop();
-    return tok;
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, -2);
+  ASSERT_EQ(parse("a = b = c = 10", driver), 0);
+  EXPECT_EQ(driver.expr, 10);
+  EXPECT_EQ(driver.symtab["a"], 10);
+  EXPECT_EQ(driver.symtab["b"], 10);
+  EXPECT_EQ(driver.symtab["c"], 10);
 }
 
-TEST(Calc2_BisonNoFlex, test_04) {
-
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-// 3--5
-  queue<Calc2Parser::symbol_type> tokens{{
-    Calc2Parser::make_INT(3, location{}),
-    Calc2Parser::make_MINUS(location{}),
-    Calc2Parser::make_MINUS(location{}),
-    Calc2Parser::make_INT(5, location{}),
-  }};
-
-  Calc2Parser parser([&tokens](LexParam&) -> Calc2Parser::symbol_type {
-    if(tokens.empty()) {
-      return Calc2Parser::make_YYEOF(location{});
-    }
-    auto tok = tokens.front();
-    tokens.pop();
-    return tok;
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 8);
-}
-
-TEST(Calc2_BisonNoFlex, test_05) {
-
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-// 3---5
-  queue<Calc2Parser::symbol_type> tokens{{
-    Calc2Parser::make_INT(3, location{}),
-    Calc2Parser::make_MINUS(location{}),
-    Calc2Parser::make_MINUS(location{}),
-    Calc2Parser::make_MINUS(location{}),
-    Calc2Parser::make_INT(5, location{}),
-  }};
-
-  Calc2Parser parser([&tokens](LexParam&) -> Calc2Parser::symbol_type {
-    if(tokens.empty()) {
-      return Calc2Parser::make_YYEOF(location{});
-    }
-    auto tok = tokens.front();
-    tokens.pop();
-    return tok;
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, -2);
-}
-
-TEST(Calc2_BisonNoFlex, test_06) {
-
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-// 3--+-5
-  queue<Calc2Parser::symbol_type> tokens{{
-    Calc2Parser::make_INT(3, location{}),
-    Calc2Parser::make_MINUS(location{}),
-    Calc2Parser::make_MINUS(location{}),
-    Calc2Parser::make_PLUS(location{}),
-    Calc2Parser::make_MINUS(location{}),
-    Calc2Parser::make_INT(5, location{}),
-  }};
-
-  Calc2Parser parser([&tokens](LexParam&) -> Calc2Parser::symbol_type {
-    if(tokens.empty()) {
-      return Calc2Parser::make_YYEOF(location{});
-    }
-    auto tok = tokens.front();
-    tokens.pop();
-    return tok;
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, -2);
-}
-TEST(Calc2_BisonNoFlex, test_07) {
-
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-// 3 + x * 7
-  queue<Calc2Parser::symbol_type> tokens{{
-    Calc2Parser::make_INT(3, location{}),
-    Calc2Parser::make_PLUS(location{}),
-    Calc2Parser::make_IDENT("x", location{}),
-    Calc2Parser::make_TIMES(location{}),
-    Calc2Parser::make_INT(7, location{}),
-  }};
-
-  Calc2Parser parser([&tokens](LexParam&) -> Calc2Parser::symbol_type {
-    if(tokens.empty()) {
-      return Calc2Parser::make_YYEOF(location{});
-    }
-    auto tok = tokens.front();
-    tokens.pop();
-    return tok;
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 3);
-}
-
-TEST(Calc2_BisonNoFlex, test_08) {
-
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-// x = 7
-  queue<Calc2Parser::symbol_type> tokens{{
-    Calc2Parser::make_IDENT("x", location{}),
-    Calc2Parser::make_EQUAL(location{}),
-    Calc2Parser::make_INT(7, location{}),
-  }};
-
-  Calc2Parser parser([&tokens](LexParam&) -> Calc2Parser::symbol_type {
-    if(tokens.empty()) {
-      return Calc2Parser::make_YYEOF(location{});
-    }
-    auto tok = tokens.front();
-    tokens.pop();
-    return tok;
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 7);
-}
-
-TEST(Calc2_BisonNoFlex, test_09) {
-
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-// x = 3 + 5
-  queue<Calc2Parser::symbol_type> tokens{{
-    Calc2Parser::make_IDENT("x", location{}),
-    Calc2Parser::make_EQUAL(location{}),
-    Calc2Parser::make_INT(3, location{}),
-    Calc2Parser::make_PLUS(location{}),
-    Calc2Parser::make_INT(5, location{}),
-  }};
-
-  Calc2Parser parser([&tokens](LexParam&) -> Calc2Parser::symbol_type {
-    if(tokens.empty()) {
-      return Calc2Parser::make_YYEOF(location{});
-    }
-    auto tok = tokens.front();
-    tokens.pop();
-    return tok;
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 8);
-  EXPECT_EQ(bisonParam.symtab["x"], 8);
-}
-
-TEST(Calc2_BisonNoFlex, test_10) {
-
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-// x = y = 7
-  queue<Calc2Parser::symbol_type> tokens{{
-    Calc2Parser::make_IDENT("x", location{}),
-    Calc2Parser::make_EQUAL(location{}),
-    Calc2Parser::make_IDENT("y", location{}),
-    Calc2Parser::make_EQUAL(location{}),
-    Calc2Parser::make_INT(7, location{}),
-  }};
-
-  Calc2Parser parser([&tokens](LexParam&) -> Calc2Parser::symbol_type {
-    if(tokens.empty()) {
-      return Calc2Parser::make_YYEOF(location{});
-    }
-    auto tok = tokens.front();
-    tokens.pop();
-    return tok;
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 7);
-  EXPECT_EQ(bisonParam.symtab["x"], 7);
-  EXPECT_EQ(bisonParam.symtab["y"], 7);
-}
-
-TEST(Calc2_BisonNoFlex, test_11) {
-
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-// x = 7; y = x + 5
-  queue<Calc2Parser::symbol_type> tokens{{
-    Calc2Parser::make_IDENT("x", location{}),
-    Calc2Parser::make_EQUAL(location{}),
-    Calc2Parser::make_INT(7, location{}),
-    Calc2Parser::make_SEMICOLON(location{}),
-    Calc2Parser::make_IDENT("y", location{}),
-    Calc2Parser::make_EQUAL(location{}),
-    Calc2Parser::make_IDENT("x", location{}),
-    Calc2Parser::make_PLUS(location{}),
-    Calc2Parser::make_INT(5, location{}),
-  }};
-
-  Calc2Parser parser([&tokens](LexParam&) -> Calc2Parser::symbol_type {
-    if(tokens.empty()) {
-      return Calc2Parser::make_YYEOF(location{});
-    }
-    auto tok = tokens.front();
-    tokens.pop();
-    return tok;
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 12);
-  EXPECT_EQ(bisonParam.symtab["x"], 7);
-  EXPECT_EQ(bisonParam.symtab["y"], 12);
-}
-
-TEST(Calc2_BisonNoFlex, test_12) {
-
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-// (x = (3 + 5) * 2) + 9 -> 25, x == 16
-  queue<Calc2Parser::symbol_type> tokens{{
-    Calc2Parser::make_LEFT_PAREN(location{}),
-    Calc2Parser::make_IDENT("x", location{}),
-    Calc2Parser::make_EQUAL(location{}),
-    Calc2Parser::make_LEFT_PAREN(location{}),
-    Calc2Parser::make_INT(3, location{}),
-    Calc2Parser::make_PLUS(location{}),
-    Calc2Parser::make_INT(5, location{}),
-    Calc2Parser::make_RIGHT_PAREN(location{}),
-    Calc2Parser::make_TIMES(location{}),
-    Calc2Parser::make_INT(2, location{}),
-    Calc2Parser::make_RIGHT_PAREN(location{}),
-    Calc2Parser::make_PLUS(location{}),
-    Calc2Parser::make_INT(9, location{}),
-  }};
-
-  Calc2Parser parser([&tokens](LexParam&) -> Calc2Parser::symbol_type {
-    if(tokens.empty()) {
-      return Calc2Parser::make_YYEOF(location{});
-    }
-    auto tok = tokens.front();
-    tokens.pop();
-    return tok;
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 25);
-  EXPECT_EQ(bisonParam.symtab["x"], 16);
-}
-
-TEST(Calc2_Bison, test_00) {
-
-  stringstream s("2 + 3");
-  Calc2Lexer lexer(s);
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-  Calc2Parser parser([&lexer](LexParam& lexParam) -> Calc2Parser::symbol_type {
-    return lexer.yylex(lexParam);
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 5);
-}
-
-TEST(Calc2_Bison, test_01) {
-
-  stringstream s("2 - 7");
-  Calc2Lexer lexer(s);
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-  Calc2Parser parser([&lexer](LexParam& lexParam) -> Calc2Parser::symbol_type {
-    return lexer.yylex(lexParam);
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, -5);
-}
-
-TEST(Calc2_Bison, test_02) {
-
-  stringstream s("-2 + -7");
-  Calc2Lexer lexer(s);
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-  Calc2Parser parser([&lexer](LexParam& lexParam) -> Calc2Parser::symbol_type {
-    return lexer.yylex(lexParam);
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, -9);
-}
-
-TEST(Calc2_Bison, test_03) {
-
-  stringstream s("a = b = c = 10");
-  Calc2Lexer lexer(s);
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-  Calc2Parser parser([&lexer](LexParam& lexParam) -> Calc2Parser::symbol_type {
-    return lexer.yylex(lexParam);
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 10);
-  EXPECT_EQ(bisonParam.symtab["a"], 10);
-  EXPECT_EQ(bisonParam.symtab["b"], 10);
-  EXPECT_EQ(bisonParam.symtab["c"], 10);
-}
-
-TEST(Calc2_Bison, test_04) {
-
-  stringstream s(R"%(
+TEST_F(Calc2_Bison, test_04) {
+  string s = R"%(
 a = 3; b = 5;
 c=7;
 x = a + b * c;
-)%");
+)%";
+  BisonDriver driver;
 
-  Calc2Lexer lexer(s);
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-  Calc2Parser parser([&lexer](LexParam& lexParam) -> Calc2Parser::symbol_type {
-    return lexer.yylex(lexParam);
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 38);
-  EXPECT_EQ(bisonParam.symtab["x"], 38);
-  EXPECT_EQ(bisonParam.symtab["a"], 3);
-  EXPECT_EQ(bisonParam.symtab["b"], 5);
-  EXPECT_EQ(bisonParam.symtab["c"], 7);
+  ASSERT_EQ(parse(s, driver), 0);
+  EXPECT_EQ(driver.expr, 38);
+  EXPECT_EQ(driver.symtab["x"], 38);
+  EXPECT_EQ(driver.symtab["a"], 3);
+  EXPECT_EQ(driver.symtab["b"], 5);
+  EXPECT_EQ(driver.symtab["c"], 7);
 }
 
-TEST(Calc2_Bison, test_05) {
-
-  stringstream s(R"%(
+TEST_F(Calc2_Bison, test_05) {
+  string s = R"%(
 a = 1; b = 2; c = 9; d = 4; e = 2; f = 3;
 ((a + b) * (c - d)) / (e + f)
-)%");
-  Calc2Lexer lexer(s);
-  BisonParam bisonParam;
-  LexParam lexParam;
+)%";
+  BisonDriver driver;
 
-  Calc2Parser parser([&lexer](LexParam& lexParam) -> Calc2Parser::symbol_type {
-    return lexer.yylex(lexParam);
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 3);
+  ASSERT_EQ(parse(s, driver), 0);
+  EXPECT_EQ(driver.expr, 3);
 }
 
-TEST(Calc2_Bison, test_06) {
-
-  stringstream s(R"%(
+TEST_F(Calc2_Bison, test_06) {
+  string s = R"%(
 100 / 10 / 2
-)%");
-  Calc2Lexer lexer(s);
-  BisonParam bisonParam;
-  LexParam lexParam;
+)%";
+  BisonDriver driver;
 
-  Calc2Parser parser([&lexer](LexParam& lexParam) -> Calc2Parser::symbol_type {
-    return lexer.yylex(lexParam);
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 5);
+  ASSERT_EQ(parse(s, driver), 0);
+  EXPECT_EQ(driver.expr, 5);
 }
 
-TEST(Calc2_Bison, test_07) {
-
-  stringstream s(R"%(
+TEST_F(Calc2_Bison, test_07) {
+  string s = R"%(
 (a) = 5;
-)%");
-  Calc2Lexer lexer(s);
-  BisonParam bisonParam;
-  LexParam lexParam;
+)%";
+  BisonDriver driver;
 
-  Calc2Parser parser([&lexer](LexParam& lexParam) -> Calc2Parser::symbol_type {
-    return lexer.yylex(lexParam);
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_NE(parser(), 0);
+  EXPECT_NE(parse(s, driver), 0);
 }
 
-TEST(Calc2_Bison, test_08) {
-
-  stringstream s(R"%(
+TEST_F(Calc2_Bison, test_08) {
+  string s = R"%(
 a = b * / c
-)%");
-  Calc2Lexer lexer(s);
-  BisonParam bisonParam;
-  LexParam lexParam;
+)%";
+  BisonDriver driver;
 
-  Calc2Parser parser([&lexer](LexParam& lexParam) -> Calc2Parser::symbol_type {
-    return lexer.yylex(lexParam);
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_NE(parser(), 0);
+  EXPECT_NE(parse(s, driver), 0);
 }
 
-TEST(Calc2_Bison, test_09) {
-
-  stringstream s(R"%(
+TEST_F(Calc2_Bison, test_09) {
+  string s = R"%(
 a + b = c
-)%");
-  Calc2Lexer lexer(s);
-  BisonParam bisonParam;
-  LexParam lexParam;
+)%";
+  BisonDriver driver;
 
-  Calc2Parser parser([&lexer](LexParam& lexParam) -> Calc2Parser::symbol_type {
-    return lexer.yylex(lexParam);
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_NE(parser(), 0);
+  EXPECT_NE(parse(s, driver), 0);
 }
 
-TEST(Calc2_Bison, test_10) {
-
-  stringstream s(R"%(
+TEST_F(Calc2_Bison, test_10) {
+  string s = R"%(
 a = 7; b = 3; c = -5;
 a + (b = c)
-)%");
-  Calc2Lexer lexer(s);
-  BisonParam bisonParam;
-  LexParam lexParam;
+)%";
+  BisonDriver driver;
 
-  Calc2Parser parser([&lexer](LexParam& lexParam) -> Calc2Parser::symbol_type {
-    return lexer.yylex(lexParam);
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 2);
-  EXPECT_EQ(bisonParam.symtab["b"], -5);
+  ASSERT_EQ(parse(s, driver), 0);
+  EXPECT_EQ(driver.expr, 2);
+  EXPECT_EQ(driver.symtab["b"], -5);
 }
 
-TEST(Calc2_Bison, test_11) {
-
-  stringstream s(R"%(
+TEST_F(Calc2_Bison, test_11) {
+  string s = R"%(
 a = 7; b = 3; c = -5;
 a = -b * -c
-)%");
-  Calc2Lexer lexer(s);
-  BisonParam bisonParam;
-  LexParam lexParam;
+)%";
+  BisonDriver driver;
 
-  Calc2Parser parser([&lexer](LexParam& lexParam) -> Calc2Parser::symbol_type {
-    return lexer.yylex(lexParam);
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, -15);
-  EXPECT_EQ(bisonParam.symtab["a"], -15);
+  ASSERT_EQ(parse(s, driver), 0);
+  EXPECT_EQ(driver.expr, -15);
+  EXPECT_EQ(driver.symtab["a"], -15);
 }
 
-TEST(Calc2_Bison, test_12) {
-
-  stringstream s(R"%(
+TEST_F(Calc2_Bison, test_12) {
+  string s = R"%(
 c = 3;
 a = (b = c + 5) * 2
-)%");
-  Calc2Lexer lexer(s);
-  BisonParam bisonParam;
-  LexParam lexParam;
+)%";
+  BisonDriver driver;
 
-  Calc2Parser parser([&lexer](LexParam& lexParam) -> Calc2Parser::symbol_type {
-    return lexer.yylex(lexParam);
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 16);
-  EXPECT_EQ(bisonParam.symtab["a"], 16);
-  EXPECT_EQ(bisonParam.symtab["b"], 8);
+  ASSERT_EQ(parse(s, driver), 0);
+  EXPECT_EQ(driver.expr, 16);
+  EXPECT_EQ(driver.symtab["a"], 16);
+  EXPECT_EQ(driver.symtab["b"], 8);
 }
 
-TEST(Calc2_Bison, test_13) {
+TEST_F(Calc2_Bison, test_13) {
+  BisonDriver driver;
 
-  stringstream s("(x = 5) * 2");
-  Calc2Lexer lexer(s);
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-  Calc2Parser parser([&lexer](LexParam& lexParam) -> Calc2Parser::symbol_type {
-    return lexer.yylex(lexParam);
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 10);
-  EXPECT_EQ(bisonParam.symtab["x"], 5);
+  ASSERT_EQ(parse( "(x = 5) * 2", driver), 0);
+  EXPECT_EQ(driver.expr, 10);
+  EXPECT_EQ(driver.symtab["x"], 5);
 }
 
-TEST(Calc2_Bison, test_14) {
+TEST_F(Calc2_Bison, test_14) {
+  BisonDriver driver;
 
-  stringstream s("x = 5; (y = 3) * 2");
-  Calc2Lexer lexer(s);
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-  Calc2Parser parser([&lexer](LexParam& lexParam) -> Calc2Parser::symbol_type {
-    return lexer.yylex(lexParam);
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_EQ(parser(), 0);
-  EXPECT_EQ(bisonParam.expr, 6);
-  EXPECT_EQ(bisonParam.symtab["x"], 5);
-  EXPECT_EQ(bisonParam.symtab["y"], 3);
+  ASSERT_EQ(parse( "x = 5; (y = 3) * 2", driver), 0);
+  EXPECT_EQ(driver.expr, 6);
+  EXPECT_EQ(driver.symtab["x"], 5);
+  EXPECT_EQ(driver.symtab["y"], 3);
 }
 
-TEST(Calc2_Bison, test_15) {
+TEST_F(Calc2_Bison, test_15) {
+  BisonDriver driver;
 
-  stringstream s("(x = 5; y = 3) * 2");
-  Calc2Lexer lexer(s);
-  BisonParam bisonParam;
-  LexParam lexParam;
-
-  Calc2Parser parser([&lexer](LexParam& lexParam) -> Calc2Parser::symbol_type {
-    return lexer.yylex(lexParam);
-  },
-  bisonParam,
-  lexParam);
-
-  EXPECT_NE(parser(), 0);
+  EXPECT_NE(parse("(x = 5; y = 3) * 2", driver), 0);
 }
 
 }

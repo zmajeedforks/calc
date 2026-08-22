@@ -53,7 +53,8 @@ struct Calc2 {
 
     Calc2Lexer lexer{in};
 
-    BisonParam bisonParam;
+    BisonDriver driver;
+    BisonParam bisonParam{driver};
     LexParam lexParam{.loc = location(inputName.get())};
 
     duration<double> lexSec{};
@@ -77,13 +78,11 @@ struct Calc2 {
     int ev = parser();
     time_point<steady_clock> parseEnd = steady_clock::now();
 
-    auto syms = flat_map{from_range, bisonParam.symtab};
-
     return Calc2{
-      .exprResult = bisonParam.expr,
+      .exprResult = driver.expr,
       .errCode = ev,
-      .errInfo = move(bisonParam.error),
-      .symtab = move(syms),
+      .errInfo = move(driver.error),
+      .symtab = move(driver.symtab),
       .stats = {
         parseEnd - parseStart,
         lexSec,
